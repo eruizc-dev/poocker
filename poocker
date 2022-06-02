@@ -1,0 +1,11 @@
+#!/bin/bash
+
+function poocker_help() {
+	echo "Poor's man Docker"
+}
+
+[[ -z "${1-}" ]] && poocker_help "$0" && exit 1
+case $1 in
+	help) poocker_"$1" "${@:2}" ;;
+	*) poocker_help "$0" && exit 1;;
+esac
