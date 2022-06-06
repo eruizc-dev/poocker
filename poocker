@@ -25,6 +25,10 @@ function poocker_rm() { #HELP rm		remove an image
 	fi
 }
 
+function poocker_ls() { #HELP ls		list all images
+	btrfs subvolume list /var/poocker | awk '{ print $9 }'
+}
+
 function poocker_help() { #HELP help	print this menu
 	echo 'Usage: poocker [command]'
 	echo 'Available commands:'
@@ -33,6 +37,6 @@ function poocker_help() { #HELP help	print this menu
 
 [[ -z "${1-}" ]] && poocker_help "$0" && exit 1
 case $1 in
-	help|init|rm) poocker_"$1" "${@:2}" ;;
+	help|init|rm|ls) poocker_"$1" "${@:2}" ;;
 	*) echo "Unrecognized option $1"; poocker_help "$0" && exit 1;;
 esac
