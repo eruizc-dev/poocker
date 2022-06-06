@@ -1,11 +1,13 @@
 #!/bin/bash
 
-function poocker_help() {
-	echo "Poor's man Docker"
+function poocker_help() { #HELP help	print this menu
+	echo 'Usage: poocker [command]'
+	echo 'Available commands:'
+	sed -n "s/^.*#HELP\\s/\t/p;" < "$0"
 }
 
 [[ -z "${1-}" ]] && poocker_help "$0" && exit 1
 case $1 in
-	help) poocker_"$1" "${@:2}" ;;
-	*) poocker_help "$0" && exit 1;;
+	help|pull) poocker_"$1" "${@:2}" ;;
+	*) echo "Unrecognized option $1"; poocker_help "$0" && exit 1;;
 esac
