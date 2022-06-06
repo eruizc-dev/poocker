@@ -15,6 +15,16 @@ function poocker_init() { #HELP init	build an image on current directory
 	fi
 }
 
+function poocker_rm() { #HELP rm		remove an image
+	if btrfs subvolume list "$BASE_PATH" | grep -qw "$1"; then
+		btrfs subvolume delete "$BASE_PATH/$1" > /dev/null
+		echo "Removed image $1"
+	else
+		echo "No image named '$1' exists"
+		exit 1
+	fi
+}
+
 function poocker_help() { #HELP help	print this menu
 	echo 'Usage: poocker [command]'
 	echo 'Available commands:'
@@ -23,6 +33,6 @@ function poocker_help() { #HELP help	print this menu
 
 [[ -z "${1-}" ]] && poocker_help "$0" && exit 1
 case $1 in
-	help|init) poocker_"$1" "${@:2}" ;;
+	help|init|rm) poocker_"$1" "${@:2}" ;;
 	*) echo "Unrecognized option $1"; poocker_help "$0" && exit 1;;
 esac
