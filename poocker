@@ -4,7 +4,8 @@ BASE_PATH='/var/poocker';
 
 function poocker_init() { #HELP init	build an image on current directory
 	if [[ -d "$1" ]]; then
-		UUID="i_$(uuidgen)"
+		LONG_UUID=$(uuidgen);
+		UUID="i-${LONG_UUID:0:4}";
 		VOLUME_PATH="$BASE_PATH/$UUID"
 		btrfs subvolume create "$VOLUME_PATH" > /dev/null
 		cp -rf --reflink=auto "$1"/* "$VOLUME_PATH" > /dev/null
