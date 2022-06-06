@@ -1,5 +1,19 @@
 #!/bin/bash
 
+BASE_PATH='/var/poocker';
+
+function poocker_init() { #HELP init	build an image on current directory
+	if [[ -d "$1" ]]; then
+		UUID="i_$(uuidgen)"
+		VOLUME_PATH="$BASE_PATH/$UUID"
+		btrfs subvolume create "$VOLUME_PATH" > /dev/null
+		cp -rf --reflink=auto "$1"/* "$VOLUME_PATH" > /dev/null
+		echo "Created image $UUID"
+	else
+		echo "No directory named '$1' exists"
+	fi
+}
+
 function poocker_help() { #HELP help	print this menu
 	echo 'Usage: poocker [command]'
 	echo 'Available commands:'
@@ -8,6 +22,6 @@ function poocker_help() { #HELP help	print this menu
 
 [[ -z "${1-}" ]] && poocker_help "$0" && exit 1
 case $1 in
-	help|pull) poocker_"$1" "${@:2}" ;;
+	help|init) poocker_"$1" "${@:2}" ;;
 	*) echo "Unrecognized option $1"; poocker_help "$0" && exit 1;;
 esac
