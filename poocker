@@ -12,10 +12,10 @@ function poocker_init() { #HELP init	build an image on current directory
 	if [[ -d "$1" ]]; then
 		LONG_UUID=$(uuidgen);
 		UUID="i-${LONG_UUID:0:4}";
-		VOLUME_PATH="$BASE_PATH/$UUID"
+		IMAGE_PATH="$BASE_PATH/$UUID"
 		mkdir -p $BASE_PATH
-		btrfs subvolume create "$VOLUME_PATH" > /dev/null
-		cp -rf --reflink=auto "$1"/* "$VOLUME_PATH" > /dev/null
+		btrfs subvolume create "$IMAGE_PATH" > /dev/null
+		cp -rf --reflink=auto "$1"/* "$IMAGE_PATH" > /dev/null
 		echo "Created image $UUID"
 	else
 		echo "No directory named '$1' exists"
