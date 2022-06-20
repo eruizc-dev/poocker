@@ -33,7 +33,7 @@ function poocker_rm() { #HELP rm		remove an image
 }
 
 function poocker_ls() { #HELP ls		list all images
-	btrfs subvolume list /var/poocker | awk '{ print $9 }'
+	btrfs subvolume list /var/poocker -o | awk '{ print $9 }'
 }
 
 function poocker_help() { #HELP help	print this menu
