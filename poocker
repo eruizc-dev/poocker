@@ -22,6 +22,13 @@ function poocker_init() { #HELP init	build an image on current directory
 	fi
 }
 
+function poocker_pull() { #HELP pull	pull image from dockerhub
+	VOLUME_PATH="/tmp/$1"
+	docker pull "$1"
+	docker save "$1" | undocker -o "$VOLUME_PATH"
+	poocker_init "$VOLUME_PATH"
+}
+
 function poocker_run() { #HELP run	run a container from an image
 	LONG_UUID=$(uuidgen);
 	UUID="c-${LONG_UUID:0:4}";
@@ -57,6 +64,6 @@ function poocker_help() { #HELP help	print this menu
 
 [[ -z "${1-}" ]] && poocker_help "$0" && exit 1
 case $1 in
-	help|init|rm|ls|run) poocker_"$1" "${@:2}" ;;
+	help|init|rm|ls|run|pull) poocker_"$1" "${@:2}" ;;
 	*) echo "Unrecognized option $1"; poocker_help "$0" && exit 1;;
 esac
